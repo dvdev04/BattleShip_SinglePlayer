@@ -1,0 +1,76 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        int location;
+
+        Battleship ship = new Battleship();
+
+        System.out.println("Ship is 3 blocks long, ocean is 10 blocks wide, choose a number: ");
+
+        Scanner scanner = new Scanner(System.in);
+        while (ship.end()) {
+            location = scanner.nextInt();
+            ship.shoot(location);
+        }
+        System.out.println("Kill!\nYou win!");
+    }
+
+    public static class Battleship {
+        private int[] ocean;
+        private int shipHead;
+        private int counter;
+
+        // check if game is over
+        boolean end() {
+            if (counter == 3) {
+                return false;
+            }
+            return true;
+        }
+
+        // creates the battlefield
+        Battleship() {
+            ocean = new int[10];
+            shipHead = (int) (Math.random() * 7);
+            for (int i = shipHead; i < shipHead + 3; i++) {
+                ocean[i] = 1;
+            }
+        }
+
+        // find the start of the ship
+        void shipStart() {
+            System.out.println("Ship head is at position " + (shipHead + 1));
+        }
+
+        // cheat sheet
+        void showOcean() {
+            for (int i = 0; i < ocean.length; i++) {
+                System.out.print(ocean[i] + " ");
+            }
+            System.out.println();
+        }
+
+        void shoot(int a) {
+            a -= 1;
+            if (a >= 0 && a < 10) {
+                switch (ocean[a]) {
+                    case 1:
+                        System.out.println("Hit!");
+                        ocean[a] = -1;
+                        counter++;
+                        break;
+                    case 0:
+                        System.out.println("Miss!");
+                        break;
+                    case -1:
+                        System.out.println("Was shot before!");
+                        break;
+                }
+            } else {
+                System.out.println("Number between 1 and 10!");
+            }
+        }
+
+    }
+}
